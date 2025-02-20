@@ -1,65 +1,64 @@
 package com.billing.invoice.domain.entity;
 
 import com.billing.invoice.domain.constant.PlanType;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "customer")
+@Table(
+        name = "data_usage_history",
+        indexes = @Index(name = "idx_customer_id", columnList = "customer_id")
+)
 @Getter
 @Setter
 @AllArgsConstructor
 @Builder
 @ToString
-public class Customer {
+public class DataUsageHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
 
-    @Column(name = "name")
+    @Column(name = "start_date", nullable = false, updatable = false)
     @NotNull
-    private String name;
+    private LocalDate startDate;
 
-    @Column(name = "plan_type")
+    @Column(name = "end_date", nullable = false, updatable = false)
+    @NotNull
+    private LocalDate endDate;
+
+    @Column(name = "plan_type", nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
-    @Builder.Default
     @NotNull
-    private PlanType planType = PlanType.BASIC;
+    private PlanType planType;
 
-    @Column(name = "months_subscribed", columnDefinition = "INT DEFAULT 0 CHECK (months_subscribed >= 0)")
-    @Builder.Default
-    private int monthsSubscribed = 0;
+    @Column(name = "data_used_GB", columnDefinition = "CHECK (data_used_GB >= 0)", nullable = false, updatable = false)
+    @NotNull
+    private double dataUsedGB;
 
-    @Column(name = "data_used_GB", columnDefinition = "DOUBLE DEFAULT 0 CHECK (data_used_GB >= 0)")
-    @Builder.Default
-    private double dataUsedGB = 0;
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "customer_id", nullable = false, updatable = false)
+    @NotNull
     @ToString.Exclude
-    List<Invoice> invoices = new ArrayList<>();
-
-    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
-    @ToString.Exclude
-    List<DataUsageHistory> dataUsageHistoryList = new ArrayList<>();
+    Customer customer;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null) return false;
+        if (o == null ) return false;
         Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
-        Customer that = (Customer) o;
+        DataUsageHistory that = (DataUsageHistory) o;
         return getId() != null && Objects.equals(getId(), that.getId());
     }
 
@@ -70,6 +69,4 @@ public class Customer {
                 : getClass().hashCode();
     }
 }
-
-
 
