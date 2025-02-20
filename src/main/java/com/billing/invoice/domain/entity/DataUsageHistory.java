@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
+import org.hibernate.annotations.Check;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
@@ -15,6 +16,7 @@ import java.util.Objects;
         name = "data_usage_history",
         indexes = @Index(name = "idx_customer_id", columnList = "customer_id")
 )
+@Check(constraints = "data_used_gb >= 0")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -40,7 +42,7 @@ public class DataUsageHistory {
     @NotNull
     private PlanType planType;
 
-    @Column(name = "data_used_GB", columnDefinition = "CHECK (data_used_GB >= 0)", nullable = false, updatable = false)
+    @Column(name = "data_used_gb", nullable = false, updatable = false)
     @NotNull
     private double dataUsedGB;
 
@@ -59,7 +61,7 @@ public class DataUsageHistory {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         DataUsageHistory that = (DataUsageHistory) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override

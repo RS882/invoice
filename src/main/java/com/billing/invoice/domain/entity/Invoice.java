@@ -16,7 +16,7 @@ import java.util.Objects;
 @Entity
 @Table(
         name = "invoice",
-        indexes = @Index(name = "idx_customer_id", columnList = "customer_id")
+        indexes = @Index(name = "idx_customer_id_for_invoice", columnList = "customer_id")
 )
 @Getter
 @Setter
@@ -74,7 +74,7 @@ public class Invoice {
         Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass) return false;
         Invoice that = (Invoice) o;
-        return getId() != null && Objects.equals(getId(), that.getId());
+        return id != null && Objects.equals(id, that.id);
     }
 
     @Override
