@@ -17,4 +17,11 @@ public class CustomerServiceImpl implements CustomerService {
     public Customer getCustomerById(Long id) {
         return repository.findById(id).orElseThrow(() -> new CustomerNotFoundException(id));
     }
+
+    @Override
+    public void cleanDataUsedGB(Customer customer) {
+        customer.setDataUsedGB(0);
+        customer.setMonthsSubscribed(customer.getMonthsSubscribed() + 1);
+        repository.save(customer);
+    }
 }

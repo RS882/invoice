@@ -53,6 +53,14 @@ public class DataUsageHistory {
     @ToString.Exclude
     Customer customer;
 
+    public DataUsageHistory( Customer customer) {
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.planType = customer.getPlanType();
+        this.dataUsedGB = customer.getDataUsedGB();
+        this.customer = customer;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

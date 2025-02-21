@@ -5,4 +5,6 @@ import com.billing.invoice.domain.entity.Customer;
 public interface CustomerService {
 
     Customer getCustomerById(Long id);
+
+    void cleanDataUsedGB(Customer customer);
 }
