@@ -2,7 +2,7 @@ package com.billing.invoice.services;
 
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.DataUsageHistory;
-import com.billing.invoice.exception_handler.exceptions.bad_request.InvoiceIssuanceException;
+import com.billing.invoice.exception_handler.exceptions.bad_request.exceptions.InvoiceIssuanceException;
 import com.billing.invoice.repositories.DataUsageHistoryRepository;
 import com.billing.invoice.services.interfaces.DataUsageHistoryService;
 import lombok.RequiredArgsConstructor;

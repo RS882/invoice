@@ -2,7 +2,7 @@ package com.billing.invoice.services;
 
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.Invoice;
-import com.billing.invoice.exception_handler.exceptions.bad_request.InvoiceIssuanceException;
+import com.billing.invoice.exception_handler.exceptions.bad_request.exceptions.InvoiceIssuanceException;
 import com.billing.invoice.repositories.InvoiceRepository;
 import com.billing.invoice.services.interfaces.InvoiceService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.Month;
 
 @Service
 @RequiredArgsConstructor

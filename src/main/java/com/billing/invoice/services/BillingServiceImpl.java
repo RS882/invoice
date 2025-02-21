@@ -3,11 +3,6 @@ package com.billing.invoice.services;
 import com.billing.invoice.domain.constant.PaymentMethod;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.Invoice;
-import com.billing.invoice.exception_handler.exceptions.bad_request.InvoiceIssuanceException;
-import com.billing.invoice.exception_handler.exceptions.not_found.PlanNotFoundException;
-import com.billing.invoice.services.billing_strategy.BasicPlanStrategy;
-import com.billing.invoice.services.billing_strategy.BusinessPlanStrategy;
-import com.billing.invoice.services.billing_strategy.PremiumPlanStrategy;
 import com.billing.invoice.services.billing_strategy.interfaces.BillingStrategy;
 import com.billing.invoice.services.interfaces.BillingService;
 import com.billing.invoice.services.interfaces.CustomerService;
@@ -17,9 +12,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.List;
 
 import static com.billing.invoice.services.billing_strategy.BillingStrategyFactory.getStrategy;
 
