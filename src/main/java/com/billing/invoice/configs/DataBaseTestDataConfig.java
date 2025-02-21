@@ -62,7 +62,7 @@ public class DataBaseTestDataConfig implements CommandLineRunner {
             Invoice invoice = Invoice.builder()
                     .customer(customer)
                     .amount(BigDecimal.valueOf(customer.getDataUsedGB() * 2))
-                    .billingDate(LocalDate.now().minusDays(5))
+                    .billingDate(LocalDate.now().minusMonths(2))
                     .status(InvoiceStatus.PARTIALLY_PAID)
                     .build();
             invoiceList.add(invoice);
@@ -70,7 +70,6 @@ public class DataBaseTestDataConfig implements CommandLineRunner {
         invoiceRepository.saveAll(invoiceList);
         log.info("✅ Invoices saved successful.");
 
-        // ✅ 3. Создаём историю платежей (PaymentHistory)
         List<PaymentHistory> paymentHistoryList = new ArrayList<>();
         for (Invoice invoice : invoiceList) {
             PaymentHistory paymentHistory = PaymentHistory.builder()
@@ -85,11 +84,12 @@ public class DataBaseTestDataConfig implements CommandLineRunner {
         log.info("✅ Payment history saved successful.");
 
              List<DataUsageHistory> dataUsageHistoryList = new ArrayList<>();
+             LocalDate basic = LocalDate.now().minusMonths(2);
         for (Customer customer : customerList) {
             DataUsageHistory dataUsageHistory = DataUsageHistory.builder()
                     .customer(customer)
-                    .startDate(getFirstDayOfLastMonth())
-                    .endDate(getLastDayOfLastMonth())
+                    .startDate(getFirstDayOfLastMonth(basic))
+                    .endDate(getLastDayOfLastMonth(basic))
                     .planType(PlanType.BUSINESS)
                     .dataUsedGB(customer.getDataUsedGB() / 2)
                     .build();

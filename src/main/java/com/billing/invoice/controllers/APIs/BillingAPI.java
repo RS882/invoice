@@ -73,7 +73,7 @@ public interface BillingAPI {
     @GetMapping
     ResponseEntity<InvoiceResponseDto> getInvoiceForCustomer(
             @RequestParam
-            @Parameter(name = "Customer ID", description = "Id of customer that will billing", example = "124")
+            @Parameter(description = "Id of customer that will billing", example = "124")
             @NotNull(message = "Id can not be null")
             @Min(value = 1, message = "Id must be great of 0")
             Long id

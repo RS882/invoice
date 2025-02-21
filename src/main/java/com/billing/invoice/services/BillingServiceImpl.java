@@ -39,6 +39,8 @@ public class BillingServiceImpl implements BillingService {
 
         dataUsageHistoryService.createDataUsageHistory(currentCustomer);
 
+        customerService.cleanDataUsedGB(currentCustomer);
+
         return savedInvoice;
     }
 

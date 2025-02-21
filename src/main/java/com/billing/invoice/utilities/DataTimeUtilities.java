@@ -1,5 +1,7 @@
 package com.billing.invoice.utilities;
 
+import com.billing.invoice.domain.constant.PlanType;
+
 import java.time.LocalDate;
 
 public class DataTimeUtilities {
@@ -11,9 +13,17 @@ public class DataTimeUtilities {
     }
 
     public static LocalDate getLastDayOfLastMonth() {
-
         int mothNowLength = BASIS.lengthOfMonth();
         return getDayOfBasicMonth(mothNowLength, BASIS);
+    }
+
+    public static LocalDate getFirstDayOfLastMonth(LocalDate basic) {
+        return getDayOfBasicMonth(1, basic);
+    }
+
+    public static LocalDate getLastDayOfLastMonth(LocalDate basic) {
+        int mothNowLength = basic.lengthOfMonth();
+        return getDayOfBasicMonth(mothNowLength, basic);
     }
 
     private static LocalDate getDayOfBasicMonth(int numOfDay, LocalDate basis) {
