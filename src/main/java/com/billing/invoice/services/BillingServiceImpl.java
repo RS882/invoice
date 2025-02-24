@@ -3,6 +3,7 @@ package com.billing.invoice.services;
 import com.billing.invoice.domain.constant.PaymentMethod;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.Invoice;
+import com.billing.invoice.services.billing_strategy.InvoiceData;
 import com.billing.invoice.services.billing_strategy.interfaces.BillingStrategy;
 import com.billing.invoice.services.interfaces.BillingService;
 import com.billing.invoice.services.interfaces.CustomerService;
@@ -41,6 +42,9 @@ public class BillingServiceImpl implements BillingService {
 
         customerService.cleanDataUsedGB(currentCustomer);
 
+        InvoiceData invoiceData = strategy.getDataForInvoiceFile(currentCustomer);
+
+        strategy.clearInvoiceCache(customerId);
         return savedInvoice;
     }
 

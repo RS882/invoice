@@ -8,20 +8,20 @@ public enum PlanType {
     PREMIUM(new BigDecimal(50), 100, new BigDecimal(1.50)),
     BUSINESS(new BigDecimal(100), 500, new BigDecimal(1));
 
-    private final BigDecimal prise;
+    private final BigDecimal price;
 
     private final int limit;
 
     private final BigDecimal overageCharge;
 
     PlanType(BigDecimal prise, int limit, BigDecimal overageCharge) {
-        this.prise = prise;
+        this.price = prise;
         this.limit = limit;
         this.overageCharge = overageCharge;
     }
 
-    public BigDecimal getPrise() {
-        return prise;
+    public BigDecimal getPrice() {
+        return price;
     }
 
     public int getLimit() {

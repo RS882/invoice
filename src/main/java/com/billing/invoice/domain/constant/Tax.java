@@ -1,16 +1,18 @@
 package com.billing.invoice.domain.constant;
 
+import java.math.BigDecimal;
+
 public enum Tax {
 
-    VAT(19);
+    VAT(BigDecimal.valueOf(19));
 
-    private final double taxRatePercentage;
+    private final BigDecimal taxRatePercentage;
 
-    Tax(double taxRate) {
+    Tax(BigDecimal taxRate) {
         this.taxRatePercentage = taxRate;
     }
 
-    public double getTaxRatePercentage() {
+    public BigDecimal getTaxRatePercentage() {
         return taxRatePercentage;
     }
 }

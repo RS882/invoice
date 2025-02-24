@@ -1,17 +1,19 @@
 package com.billing.invoice.domain.constant;
 
+import java.math.BigDecimal;
+
 public enum Discount {
 
-    SERVICE_OVER_12_MONTHS(5),
-    SERVICE_OVER_24_MONTHS(10);
+    SERVICE_OVER_12_MONTHS(BigDecimal.valueOf(5)),
+    SERVICE_OVER_24_MONTHS(BigDecimal.valueOf(10));
 
-    private final int discountPercentage;
+    private final BigDecimal discountPercentage;
 
-    Discount(int discountPercentage) {
+    Discount(BigDecimal discountPercentage) {
         this.discountPercentage = discountPercentage;
     }
 
-    public int getDiscountPercentage() {
+    public BigDecimal getDiscountPercentage() {
         return discountPercentage;
     }
 }
