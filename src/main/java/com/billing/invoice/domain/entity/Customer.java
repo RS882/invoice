@@ -2,6 +2,7 @@ package com.billing.invoice.domain.entity;
 
 import com.billing.invoice.domain.constant.PlanType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -14,7 +15,7 @@ import java.util.Objects;
 @Table(name = "customer")
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString
@@ -26,21 +27,23 @@ public class Customer {
     private Long id;
 
     @Column(name = "name")
-    @NotNull
+    @NotNull(message = "Name can not be null")
     private String name;
 
     @Column(name = "plan_type")
     @Enumerated(EnumType.STRING)
     @Builder.Default
-    @NotNull
+    @NotNull(message = "Plan type can not be null")
     private PlanType planType = PlanType.BASIC;
 
     @Column(name = "months_subscribed", columnDefinition = "INT DEFAULT 0 CHECK (months_subscribed >= 0)")
+    @Min(value = 0, message = "Months subscribed must be great 0")
     @Builder.Default
     private int monthsSubscribed = 0;
 
     @Column(name = "data_used_GB", columnDefinition = "DOUBLE DEFAULT 0 CHECK (data_used_GB >= 0)")
     @Builder.Default
+    @Min(value = 0, message = "Data used must be great 0")
     private double dataUsedGB = 0;
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)

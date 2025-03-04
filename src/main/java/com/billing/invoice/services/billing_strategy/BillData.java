@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Value
 @Builder
-public class InvoiceData {
+public class BillData {
 
     PlanType plan;
 

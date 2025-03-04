@@ -19,7 +19,7 @@ import java.util.Objects;
 @Check(constraints = "data_used_gb >= 0")
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString

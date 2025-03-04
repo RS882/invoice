@@ -17,7 +17,7 @@ import java.util.Objects;
         indexes = @Index(name = "idx_invoice_id", columnList = "invoice_id"))
 @Getter
 @Setter
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @ToString

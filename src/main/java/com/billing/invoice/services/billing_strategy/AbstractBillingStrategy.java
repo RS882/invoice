@@ -7,16 +7,14 @@ import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.services.billing_strategy.interfaces.BillingStrategy;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
-
 @Slf4j
 public abstract class AbstractBillingStrategy implements BillingStrategy {
+
 
     protected static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
     protected static final int SCALE = 2;
@@ -36,14 +34,9 @@ public abstract class AbstractBillingStrategy implements BillingStrategy {
         this.vatRatePercentage = scaleValue(Objects.requireNonNull(Tax.VAT.getTaxRatePercentage(), "VAT cannot be null"));
     }
 
-    @Override
-    public BigDecimal calculateBill(@NonNull Customer customer) {
-        return getDataForInvoiceFile(customer).getTotal();
-    }
 
     @Override
-    @Cacheable(value = "invoice_data", key = "#customer.id")
-    public InvoiceData getDataForInvoiceFile(@NonNull Customer customer) {
+    public BillData calculateBill(@NonNull Customer customer) {
         BigDecimal extraGBPrice = calculateOverageCharge(customer.getDataUsedGB());
         BigDecimal totalBeforeDiscount = scaleValue(price.add(extraGBPrice));
 
@@ -54,7 +47,7 @@ public abstract class AbstractBillingStrategy implements BillingStrategy {
         BigDecimal vat = calculateVat(totalAfterDiscount);
         BigDecimal total = scaleValue(totalAfterDiscount.add(vat));
 
-        return InvoiceData.builder()
+        return BillData.builder()
                 .plan(plan)
                 .price(price)
                 .limit(limit)
@@ -65,11 +58,6 @@ public abstract class AbstractBillingStrategy implements BillingStrategy {
                 .vat(vat)
                 .total(total)
                 .build();
-    }
-
-    @CacheEvict(value = "invoice_data", key = "#customerId")
-    public void clearInvoiceCache(@NonNull Long customerId) {
-        log.info("Customer cache with ID {} cleaned.", customerId);
     }
 
     private BigDecimal calculateVat(BigDecimal totalAfterDiscount) {
