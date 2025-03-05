@@ -1,8 +1,8 @@
 package com.billing.invoice.configs;
 
-import com.billing.invoice.domain.constant.InvoiceStatus;
-import com.billing.invoice.domain.constant.PaymentMethod;
-import com.billing.invoice.domain.constant.PlanType;
+import com.billing.invoice.constant.InvoiceStatus;
+import com.billing.invoice.constant.PaymentMethod;
+import com.billing.invoice.constant.PlanType;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.DataUsageHistory;
 import com.billing.invoice.domain.entity.Invoice;

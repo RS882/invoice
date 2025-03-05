@@ -16,6 +16,7 @@ import java.time.LocalDate;
 public class InvoiceServiceImpl implements InvoiceService {
 
     private final InvoiceRepository repository;
+
     @Override
     public Invoice createNewInvoice(Customer customer, BigDecimal amount) {
 
@@ -24,7 +25,12 @@ public class InvoiceServiceImpl implements InvoiceService {
                 .amount(amount)
                 .build();
 
-        return repository.save(newInvoice);
+        return saveInvoice(newInvoice);
+    }
+
+    @Override
+    public Invoice saveInvoice(Invoice invoice) {
+        return repository.save(invoice);
     }
 
     @Override

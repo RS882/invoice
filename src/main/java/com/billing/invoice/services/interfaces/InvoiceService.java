@@ -9,5 +9,7 @@ public interface InvoiceService {
 
     Invoice createNewInvoice(Customer customer, BigDecimal amount);
 
+    Invoice saveInvoice(Invoice invoice);
+
     void checkInvoiceIssuanceCurrentsMonth(Long customerId);
 }

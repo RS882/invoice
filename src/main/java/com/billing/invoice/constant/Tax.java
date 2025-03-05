@@ -1,4 +1,4 @@
-package com.billing.invoice.domain.constant;
+package com.billing.invoice.constant;
 
 import java.math.BigDecimal;
 

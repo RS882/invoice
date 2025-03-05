@@ -1,6 +1,6 @@
-package com.billing.invoice.services.billing_strategy;
+package com.billing.invoice.domain.model;
 
-import com.billing.invoice.domain.constant.PlanType;
+import com.billing.invoice.constant.PlanType;
 import lombok.Builder;
 import lombok.Value;
 
@@ -24,7 +24,10 @@ public class BillData {
 
     BigDecimal discount;
 
+    BigDecimal vatRate;
+
     BigDecimal vat;
 
     BigDecimal total;
+
 }

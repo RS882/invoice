@@ -1,7 +1,8 @@
 package com.billing.invoice.services.billing_strategy;
 
-import com.billing.invoice.domain.constant.PlanType;
+import com.billing.invoice.constant.PlanType;
 import com.billing.invoice.domain.entity.Customer;
+import com.billing.invoice.domain.model.BillData;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;

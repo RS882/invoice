@@ -1,6 +1,6 @@
 package com.billing.invoice.domain.dto.invoice_dto;
 
-import com.billing.invoice.domain.constant.InvoiceStatus;
+import com.billing.invoice.constant.InvoiceStatus;
 import com.billing.invoice.domain.entity.Invoice;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;

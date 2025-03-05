@@ -19,3 +19,5 @@ storage:
 minio:
   accessKey: ${MINIO_ACCESS_KEY}
   secretKey: ${MINIO_SECRET_KEY}
+bucket:
+  name: ${BUCKET_NAME}

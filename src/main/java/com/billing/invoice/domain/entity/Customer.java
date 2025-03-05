@@ -1,6 +1,6 @@
 package com.billing.invoice.domain.entity;
 
-import com.billing.invoice.domain.constant.PlanType;
+import com.billing.invoice.constant.PlanType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;

@@ -1,9 +1,10 @@
 package com.billing.invoice.services.billing_strategy;
 
-import com.billing.invoice.domain.constant.Discount;
-import com.billing.invoice.domain.constant.PlanType;
-import com.billing.invoice.domain.constant.Tax;
+import com.billing.invoice.constant.Discount;
+import com.billing.invoice.constant.PlanType;
+import com.billing.invoice.constant.Tax;
 import com.billing.invoice.domain.entity.Customer;
+import com.billing.invoice.domain.model.BillData;
 import com.billing.invoice.services.billing_strategy.interfaces.BillingStrategy;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
@@ -55,6 +56,7 @@ public abstract class AbstractBillingStrategy implements BillingStrategy {
                 .extraGBPrice(extraGBPrice)
                 .discountRate(discountRate)
                 .discount(discount)
+                .vatRate(vatRatePercentage)
                 .vat(vat)
                 .total(total)
                 .build();

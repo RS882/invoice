@@ -1,6 +1,6 @@
 package com.billing.invoice.domain.entity;
 
-import com.billing.invoice.domain.constant.InvoiceStatus;
+import com.billing.invoice.constant.InvoiceStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -39,7 +39,7 @@ public class Invoice {
     @NotNull
     private LocalDate billingDate;
 
-    @Column(name = "invoice_file_path")
+    @Column(name = "invoice_file_path", length = 512)
     private String invoiceFilePath;
 
     @Column(name = "status")

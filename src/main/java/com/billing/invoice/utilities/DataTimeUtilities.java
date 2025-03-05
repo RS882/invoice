@@ -1,7 +1,5 @@
 package com.billing.invoice.utilities;
 
-import com.billing.invoice.domain.constant.PlanType;
-
 import java.time.LocalDate;
 
 public class DataTimeUtilities {

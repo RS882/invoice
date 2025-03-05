@@ -1,6 +1,6 @@
 package com.billing.invoice.exception_handler.exceptions.not_found.excrptions;
 
-import com.billing.invoice.domain.constant.PlanType;
+import com.billing.invoice.constant.PlanType;
 import com.billing.invoice.exception_handler.exceptions.not_found.NotFoundException;
 
 public class PlanNotFoundException extends NotFoundException {

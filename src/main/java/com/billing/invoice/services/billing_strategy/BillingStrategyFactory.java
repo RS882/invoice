@@ -1,6 +1,6 @@
 package com.billing.invoice.services.billing_strategy;
 
-import com.billing.invoice.domain.constant.PlanType;
+import com.billing.invoice.constant.PlanType;
 import com.billing.invoice.exception_handler.exceptions.not_found.excrptions.PlanNotFoundException;
 import com.billing.invoice.services.billing_strategy.interfaces.BillingStrategy;
 

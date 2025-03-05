@@ -1,6 +1,6 @@
 package com.billing.invoice.domain.entity;
 
-import com.billing.invoice.domain.constant.PaymentMethod;
+import com.billing.invoice.constant.PaymentMethod;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
