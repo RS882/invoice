@@ -23,7 +23,6 @@ import static com.billing.invoice.services.billing_strategy.BillingStrategyFacto
 @RequiredArgsConstructor
 public class BillingServiceImpl implements BillingService {
 
-
     private final CustomerService customerService;
     private final InvoiceService invoiceService;
     private final DataUsageHistoryService dataUsageHistoryService;

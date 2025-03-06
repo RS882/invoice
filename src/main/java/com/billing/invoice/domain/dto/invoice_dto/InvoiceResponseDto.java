@@ -2,6 +2,7 @@ package com.billing.invoice.domain.dto.invoice_dto;
 
 import com.billing.invoice.constant.InvoiceStatus;
 import com.billing.invoice.domain.entity.Invoice;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
@@ -12,6 +13,7 @@ import java.time.LocalDate;
 @EqualsAndHashCode
 @ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor(force = true)
 @Schema(description = "Dto for invoice's parameter")
 public class InvoiceResponseDto {
 
@@ -25,6 +27,7 @@ public class InvoiceResponseDto {
     private final BigDecimal amount;
 
     @Schema(description = "Date of invoice", example = "24.08.25")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private final LocalDate billingDate;
 
     @Schema(description = "Path for loading invoice file", example = "http://seit/invoice/kjjj/23")

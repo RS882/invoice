@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: invoice
+  datasource:
+    url: jdbc:h2:mem:invoice
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+server:
+  servlet:
+    context-path: /api
+  port: 8095
+storage:
+  url: ${STORAGE_URL}
+minio:
+  accessKey: ${MINIO_ACCESS_KEY}
+  secretKey: ${MINIO_SECRET_KEY}
+bucket:
+  name: tests
