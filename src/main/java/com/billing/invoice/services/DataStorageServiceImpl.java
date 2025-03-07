@@ -50,13 +50,10 @@ public class DataStorageServiceImpl implements DataStorageService {
                 }
                 pdfBytes = outputStream.toByteArray();
             }
-
             putFile(pdfBytes,filePath);
-
             return getFileUrl(filePath);
 
         } catch (IOException e) {
-            log.error("I/O error while generating or uploading PDF", e);
             throw new ServerIOException("Error processing PDF: "+ e.getMessage());
         }
     }
@@ -70,9 +67,6 @@ public class DataStorageServiceImpl implements DataStorageService {
                             .stream(pdfInputStream, pdfBytes.length, -1)
                             .contentType(MediaType.APPLICATION_PDF_VALUE)
                             .build());
-
-            log.info("File uploaded: {}", filePath);
-
         } catch (Exception e) {
             log.error("Error uploading invoice to MinIO", e);
             throw new MinioException("Error uploading file: "+ e.getMessage());
