@@ -1,17 +1,23 @@
 package com.billing.invoice.controllers;
 
 import com.billing.invoice.constant.InvoiceStatus;
+import com.billing.invoice.constant.PaymentMethod;
 import com.billing.invoice.constant.PlanType;
 import com.billing.invoice.domain.dto.invoice_dto.InvoiceResponseDto;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.DataUsageHistory;
+import com.billing.invoice.domain.entity.Invoice;
+import com.billing.invoice.domain.entity.PaymentHistory;
 import com.billing.invoice.repositories.CustomerRepository;
 import com.billing.invoice.repositories.DataUsageHistoryRepository;
+import com.billing.invoice.repositories.InvoiceRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.minio.*;
 import io.minio.messages.Item;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -23,14 +29,19 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.StreamSupport;
 
+import static com.billing.invoice.utilities.DataTimeUtilities.getFirstDayOfLastMonth;
+import static com.billing.invoice.utilities.DataTimeUtilities.getLastDayOfLastMonth;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.isA;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @ActiveProfiles("test")
@@ -50,6 +61,9 @@ class BillingControllerTest {
 
     @Autowired
     private DataUsageHistoryRepository dataUsageHistoryRepository;
+
+    @Autowired
+    private InvoiceRepository invoiceRepository;
 
     @Autowired
     private MinioClient minioClient;
@@ -75,23 +89,30 @@ class BillingControllerTest {
 
     @AfterEach
     void clean() throws Exception {
-        Iterable<Result<Item>> results = minioClient.listObjects(
-                ListObjectsArgs.builder()
-                        .bucket(bucketName)
-                        .prefix(String.format("%d/", testCustomer.getId()))
-                        .recursive(true)
-                        .build());
 
-        for (Result<Item> result : results) {
-            Item item = result.get();
-            minioClient.removeObject(
-                    RemoveObjectArgs.builder()
+        boolean isBucketExists = minioClient.bucketExists(BucketExistsArgs.builder()
+                .bucket(bucketName)
+                .build());
+
+        if (isBucketExists) {
+
+            Iterable<Result<Item>> results = minioClient.listObjects(
+                    ListObjectsArgs.builder()
                             .bucket(bucketName)
-                            .object(item.objectName())
+                            .prefix(String.format("%d/", testCustomer.getId()))
+                            .recursive(true)
                             .build());
-        }
 
-        minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
+            for (Result<Item> result : results) {
+                Item item = result.get();
+                minioClient.removeObject(
+                        RemoveObjectArgs.builder()
+                                .bucket(bucketName)
+                                .object(item.objectName())
+                                .build());
+            }
+            minioClient.removeBucket(RemoveBucketArgs.builder().bucket(bucketName).build());
+        }
     }
 
     @Nested
@@ -102,7 +123,6 @@ class BillingControllerTest {
 
         @Test
         public void get_invoice_for_customer_status_200() throws Exception {
-
             Long testCustomerId = testCustomer.getId();
             int testCustomerMonthsSubscribed = testCustomer.getMonthsSubscribed();
 
@@ -128,10 +148,13 @@ class BillingControllerTest {
                             .recursive(true)
                             .build());
 
+            int count = 0;
             for (Result<Item> result : results) {
                 Item item = result.get();
+                count++;
                 assertTrue(item.objectName().endsWith(".pdf"));
             }
+            assertEquals(1, count);
 
             List<DataUsageHistory> dataUsageHistoryList = dataUsageHistoryRepository.findAllByCustomerId(testCustomerId);
             assertEquals(1, dataUsageHistoryList.size());
@@ -146,6 +169,70 @@ class BillingControllerTest {
             assertNotNull(updatedCustomer);
             assertEquals(0, updatedCustomer.getDataUsedGB());
             assertEquals(updatedCustomer.getMonthsSubscribed(), testCustomerMonthsSubscribed + 1);
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+                "0",
+                "-23"})
+        public void get_invoice_for_customer_status_400_customer_id_is_incorrect(Long customerId) throws Exception {
+            mockMvc.perform(get(URL)
+                            .param("id", String.valueOf(customerId))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(jsonPath("$.errors").isArray());
+        }
+
+        @Test
+        public void get_invoice_for_customer_status_404_customer_not_found() throws Exception {
+            mockMvc.perform(get(URL)
+                            .param("id", String.valueOf(12345L))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound())
+                    .andExpect(jsonPath("$.message").isNotEmpty())
+                    .andExpect(jsonPath("$.message", isA(String.class)));
+        }
+
+        @Test
+        public void get_invoice_for_customer_status_400_if_invoice_has_already_been_inserted() throws Exception {
+
+            Invoice invoice = Invoice.builder()
+                    .customer(testCustomer)
+                    .amount(BigDecimal.valueOf(testCustomer.getDataUsedGB() * 2))
+                    .billingDate(LocalDate.now())
+                    .status(InvoiceStatus.PARTIALLY_PAID)
+                    .build();
+
+            invoiceRepository.save(invoice);
+
+            mockMvc.perform(get(URL)
+                            .param("id", String.valueOf(testCustomer.getId()))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").isNotEmpty())
+                    .andExpect(jsonPath("$.message", isA(String.class)));
+        }
+
+        @Test
+        public void get_invoice_for_customer_status_400_if_data_usage_history_is_already_exists() throws Exception {
+
+            DataUsageHistory newDataUsageHistory = DataUsageHistory.builder()
+                    .startDate(LocalDate.now().minusMonths(1))
+                    .endDate(LocalDate.now().minusMonths(1))
+                    .planType(testCustomer.getPlanType())
+                    .dataUsedGB(testCustomer.getDataUsedGB())
+                    .customer(testCustomer)
+                    .build();
+
+            dataUsageHistoryRepository.save(newDataUsageHistory);
+
+            mockMvc.perform(get(URL)
+                            .param("id", String.valueOf(testCustomer.getId()))
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isBadRequest())
+                    .andExpect(jsonPath("$.message").isNotEmpty())
+                    .andExpect(jsonPath("$.message", isA(String.class)));
         }
     }
 }

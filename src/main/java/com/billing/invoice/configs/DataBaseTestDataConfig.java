@@ -38,7 +38,6 @@ public class DataBaseTestDataConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // ✅ 1. Создаём клиентов
         List<Customer> customerList = new ArrayList<>();
         Customer customerBasis1 = Customer.builder().name("John").monthsSubscribed(10).dataUsedGB(40).build();
         Customer customerBasis2 = Customer.builder().name("John2").monthsSubscribed(15).dataUsedGB(70).build();
