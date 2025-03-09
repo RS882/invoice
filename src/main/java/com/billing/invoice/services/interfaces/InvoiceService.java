@@ -9,9 +9,13 @@ public interface InvoiceService {
 
     Invoice createNewInvoice(Customer customer, BigDecimal amount);
 
-    Invoice saveInvoice(Invoice invoice);
-
     void checkInvoiceIssuanceCurrentsMonth(Long customerId);
 
     Invoice getInvoiceById(Long id);
+
+    BigDecimal calculateRemainingBalance(Long invoiceId);
+
+    Invoice updateInvoiceFilePath(Invoice invoice, String invoiceFilePath);
+
+    void checkAndUpdateInvoiceStatus(Long invoiceId);
 }

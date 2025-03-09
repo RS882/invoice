@@ -1,6 +1,5 @@
 package com.billing.invoice.services;
 
-import com.billing.invoice.constant.PaymentMethod;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.Invoice;
 import com.billing.invoice.domain.model.BillData;
@@ -50,14 +49,13 @@ public class BillingServiceImpl implements BillingService {
                 .build();
 
         String invoicePath = dataStorageService.uploadFile(invoiceData, customerId);
-        savedInvoice.setInvoiceFilePath(invoicePath);
-        invoiceService.saveInvoice(savedInvoice);
+        Invoice updatedInvoice = invoiceService.updateInvoiceFilePath(savedInvoice, invoicePath);
 
         dataUsageHistoryService.createDataUsageHistory(currentCustomer);
 
         customerService.cleanDataUsedGB(currentCustomer);
 
-        return savedInvoice;
+        return updatedInvoice;
     }
 
     private void validateBillingConditions(Long customerId) {

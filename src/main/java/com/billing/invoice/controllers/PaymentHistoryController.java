@@ -20,7 +20,6 @@ public class PaymentHistoryController implements PaymentHistoryAPI {
 
     private final PaymentService paymentService;
 
-
     @Override
     public ResponseEntity<ResponseMessageDto> createNewPaymentHistory(PaymentRequestDto dto) {
 

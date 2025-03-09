@@ -52,7 +52,7 @@ public class DataUsageHistory {
     @JoinColumn(name = "customer_id", nullable = false, updatable = false)
     @NotNull
     @ToString.Exclude
-    Customer customer;
+    private Customer customer;
 
     @Override
     public boolean equals(Object o) {

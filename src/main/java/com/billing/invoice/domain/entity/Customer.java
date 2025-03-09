@@ -49,12 +49,12 @@ public class Customer {
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
-    List<Invoice> invoices = new ArrayList<>();
+    private List<Invoice> invoices = new ArrayList<>();
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
-    List<DataUsageHistory> dataUsageHistoryList = new ArrayList<>();
+    private List<DataUsageHistory> dataUsageHistoryList = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

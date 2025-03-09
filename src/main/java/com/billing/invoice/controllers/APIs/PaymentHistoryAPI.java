@@ -17,7 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Payment history Controller", description = "Controller for payment history of invoice")
+@Tag(name = "Payment history controller", description = "Controller for payment history of invoice")
 @RequestMapping("/v1/payment")
 public interface PaymentHistoryAPI {
 
@@ -72,7 +72,7 @@ public interface PaymentHistoryAPI {
                             schema = @Schema(implementation = ResponseMessageDto.class)
                     ))
     })
-    @PostMapping("/payment")
+    @PostMapping()
     ResponseEntity<ResponseMessageDto> createNewPaymentHistory(
             @org.springframework.web.bind.annotation.RequestBody
             @Valid

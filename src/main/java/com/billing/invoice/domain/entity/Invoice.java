@@ -53,12 +53,12 @@ public class Invoice {
     @JoinColumn(name = "customer_id", nullable = false, updatable = false)
     @NotNull
     @ToString.Exclude
-    Customer customer;
+    private Customer customer;
 
     @OneToMany(mappedBy = "invoice", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     @ToString.Exclude
-    List<PaymentHistory> paymentHistoryList = new ArrayList<>();
+    private List<PaymentHistory> paymentHistoryList = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

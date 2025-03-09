@@ -8,5 +8,4 @@ public interface PaymentService {
 
     void addPayment(Long invoiceId, BigDecimal amount, PaymentMethod method);
 
-    BigDecimal calculateRemainingBalance(Long invoiceId);
 }

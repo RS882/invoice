@@ -30,11 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
                 .amountPaid(amount)
                 .build();
         repository.save(newPaymentHistory);
-    }
 
-
-    @Override
-    public BigDecimal calculateRemainingBalance(Long invoiceId) {
-        return null;
+        invoiceService.checkAndUpdateInvoiceStatus(invoiceId);
     }
 }

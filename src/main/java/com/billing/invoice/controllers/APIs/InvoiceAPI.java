@@ -1,6 +1,5 @@
 package com.billing.invoice.controllers.APIs;
 
-import com.billing.invoice.domain.dto.invoice_dto.InvoiceResponseDto;
 import com.billing.invoice.domain.dto.invoice_dto.ResponseMessageDto;
 import com.billing.invoice.domain.dto.payment_dto.InvoiceRemainingBalanceResponseDto;
 import com.billing.invoice.exception_handler.exceptions.dto.ValidationErrorsDto;
@@ -20,23 +19,22 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@Tag(name = "Billing controller", description = "Controller for billing of invoice")
-@RequestMapping("/v1/billing")
-public interface BillingAPI {
+@Tag(name = "Invoice controller", description = "Controller for invoice operations")
+@RequestMapping("/v1/invoice")
+public interface InvoiceAPI {
 
-    @Operation(summary = "Get new invoice",
-            description = "This method create and get new invoice for customer."
+    @Operation(summary = "Get remaining balance of invoice",
+            description = "This method get remaining balance of invoice by invoice id."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Invoice get successfully",
+            @ApiResponse(responseCode = "200", description = "Remaining balance get successfully",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = InvoiceResponseDto.class))),
+                            schema = @Schema(implementation = InvoiceRemainingBalanceResponseDto.class))),
             @ApiResponse(responseCode = "400", description = "Request is wrong",
                     content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(
                                     oneOf = {
-                                            ValidationErrorsDto.class,
-                                            ResponseMessageDto.class
+                                            ValidationErrorsDto.class
                                     }
                             ),
                             examples = {
@@ -51,14 +49,10 @@ public interface BillingAPI {
                                                     "    }\n" +
                                                     "  ]\n" +
                                                     "}"
-                                    ),
-                                    @ExampleObject(
-                                            name = "Wrong invoice parameter",
-                                            value = "{\"message\": \"The invoice was already issued\"}"
                                     )
                             })),
             @ApiResponse(responseCode = "404",
-                    description = "Customer not found",
+                    description = "Invoice not found",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = ResponseMessageDto.class)
@@ -70,14 +64,12 @@ public interface BillingAPI {
                             schema = @Schema(implementation = ResponseMessageDto.class)
                     )),
     })
-    @GetMapping("/invoice/customer/{id}")
-    ResponseEntity<InvoiceResponseDto> getInvoiceForCustomer(
+    @GetMapping("{id}/balance")
+    ResponseEntity<InvoiceRemainingBalanceResponseDto> getRemainingBalance(
             @PathVariable
-            @Parameter(description = "Id of customer that will billing", example = "124")
+            @Parameter(description = "Id of invoice", example = "124")
             @NotNull(message = "Id can not be null")
             @Min(value = 1, message = "Id must be great of 0")
             Long id
     );
-
-
 }
