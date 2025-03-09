@@ -1,13 +1,11 @@
 package com.billing.invoice.controllers;
 
 import com.billing.invoice.constant.InvoiceStatus;
-import com.billing.invoice.constant.PaymentMethod;
 import com.billing.invoice.constant.PlanType;
 import com.billing.invoice.domain.dto.invoice_dto.InvoiceResponseDto;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.DataUsageHistory;
 import com.billing.invoice.domain.entity.Invoice;
-import com.billing.invoice.domain.entity.PaymentHistory;
 import com.billing.invoice.repositories.CustomerRepository;
 import com.billing.invoice.repositories.DataUsageHistoryRepository;
 import com.billing.invoice.repositories.InvoiceRepository;
@@ -31,12 +29,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.StreamSupport;
 
-import static com.billing.invoice.utilities.DataTimeUtilities.getFirstDayOfLastMonth;
-import static com.billing.invoice.utilities.DataTimeUtilities.getLastDayOfLastMonth;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.isA;
 import static org.junit.jupiter.api.Assertions.*;
@@ -85,7 +79,6 @@ class BillingControllerTest {
                 .build();
         testCustomer = customerRepository.save(customer);
     }
-
 
     @AfterEach
     void clean() throws Exception {

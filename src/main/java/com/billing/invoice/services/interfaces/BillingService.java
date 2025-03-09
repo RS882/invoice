@@ -8,8 +8,4 @@ import java.math.BigDecimal;
 public interface BillingService {
 
     Invoice generateInvoiceForCustomer(Long customerId);
-
-    void addPayment(Long invoiceId, BigDecimal amount, PaymentMethod method);
-
-    BigDecimal calculateRemainingBalance(Long invoiceId);
 }

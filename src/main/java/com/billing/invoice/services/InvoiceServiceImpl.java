@@ -3,6 +3,7 @@ package com.billing.invoice.services;
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.Invoice;
 import com.billing.invoice.exception_handler.exceptions.bad_request.exceptions.InvoiceIssuanceException;
+import com.billing.invoice.exception_handler.exceptions.not_found.excrptions.InvoiceNotFoundException;
 import com.billing.invoice.repositories.InvoiceRepository;
 import com.billing.invoice.services.interfaces.InvoiceService;
 import lombok.RequiredArgsConstructor;
@@ -40,5 +41,12 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (invoiceCount > 0) {
             throw new InvoiceIssuanceException(now.getMonth().minus(1));
         }
+    }
+
+    @Override
+    public Invoice getInvoiceById(Long id) {
+        return repository.findById(id).orElseThrow(
+                ()-> new InvoiceNotFoundException(id)
+        );
     }
 }

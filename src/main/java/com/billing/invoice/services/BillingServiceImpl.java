@@ -64,14 +64,4 @@ public class BillingServiceImpl implements BillingService {
         invoiceService.checkInvoiceIssuanceCurrentsMonth(customerId);
         dataUsageHistoryService.checkDataUsageExistencePreviousMonth(customerId);
     }
-
-    @Override
-    public void addPayment(Long invoiceId, BigDecimal amount, PaymentMethod method) {
-
-    }
-
-    @Override
-    public BigDecimal calculateRemainingBalance(Long invoiceId) {
-        return null;
-    }
 }

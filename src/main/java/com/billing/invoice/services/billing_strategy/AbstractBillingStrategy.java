@@ -13,13 +13,10 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
+import static com.billing.invoice.utilities.BigDecimalUtilities.*;
+
 @Slf4j
 public abstract class AbstractBillingStrategy implements BillingStrategy {
-
-
-    protected static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
-    protected static final int SCALE = 2;
-    protected static final RoundingMode ROUNDING_MODE = RoundingMode.HALF_EVEN;
 
     protected final BigDecimal price;
     protected final int limit;
@@ -34,7 +31,6 @@ public abstract class AbstractBillingStrategy implements BillingStrategy {
         this.plan = plan;
         this.vatRatePercentage = scaleValue(Objects.requireNonNull(Tax.VAT.getTaxRatePercentage(), "VAT cannot be null"));
     }
-
 
     @Override
     public BillData calculateBill(@NonNull Customer customer) {
@@ -91,9 +87,5 @@ public abstract class AbstractBillingStrategy implements BillingStrategy {
         return scaleValue(totalBeforeDiscount
                 .multiply(discountRate)
                 .divide(ONE_HUNDRED, SCALE, ROUNDING_MODE));
-    }
-
-    private BigDecimal scaleValue(BigDecimal value) {
-        return value.setScale(SCALE, ROUNDING_MODE);
     }
 }

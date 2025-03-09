@@ -12,4 +12,6 @@ public interface InvoiceService {
     Invoice saveInvoice(Invoice invoice);
 
     void checkInvoiceIssuanceCurrentsMonth(Long customerId);
+
+    Invoice getInvoiceById(Long id);
 }
