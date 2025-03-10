@@ -4,6 +4,6 @@ import com.billing.invoice.exception_handler.exceptions.not_found.NotFoundExcept
 
 public class PaymentMethodNotFoundException extends NotFoundException {
     public PaymentMethodNotFoundException(String method) {
-        super(String.format("Payment method <%s> is invalid"));
+        super(String.format("Payment method <%s> not found", method));
     }
 }

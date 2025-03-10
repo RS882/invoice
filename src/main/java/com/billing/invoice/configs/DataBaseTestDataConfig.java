@@ -62,7 +62,7 @@ public class DataBaseTestDataConfig implements CommandLineRunner {
                     .customer(customer)
                     .amount(BigDecimal.valueOf(customer.getDataUsedGB() * 2))
                     .billingDate(LocalDate.now().minusMonths(2))
-                    .status(InvoiceStatus.PARTIALLY_PAID)
+                    .status(InvoiceStatus.PENDING)
                     .build();
             invoiceList.add(invoice);
         }

@@ -6,8 +6,6 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Getter
-@EqualsAndHashCode
-@ToString
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(force = true)
 @Schema(description = "Dto for invoice remaining balance")

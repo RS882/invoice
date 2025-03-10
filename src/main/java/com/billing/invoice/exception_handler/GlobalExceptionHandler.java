@@ -93,6 +93,11 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(new ResponseMessageDto(ex.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ResponseMessageDto> handleException(IllegalStateException ex) {
+        return new ResponseEntity<>(new ResponseMessageDto(ex.getMessage()), HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ResponseMessageDto> handleException(RuntimeException ex) {
         log.error("RuntimeException occurred", ex);

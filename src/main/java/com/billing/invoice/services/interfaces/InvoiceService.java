@@ -2,6 +2,7 @@ package com.billing.invoice.services.interfaces;
 
 import com.billing.invoice.domain.entity.Customer;
 import com.billing.invoice.domain.entity.Invoice;
+import com.billing.invoice.domain.entity.PaymentHistory;
 
 import java.math.BigDecimal;
 
@@ -18,4 +19,6 @@ public interface InvoiceService {
     Invoice updateInvoiceFilePath(Invoice invoice, String invoiceFilePath);
 
     void checkAndUpdateInvoiceStatus(Long invoiceId);
+
+    void addPaymentHistory(Invoice invoice, PaymentHistory paymentHistory);
 }

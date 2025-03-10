@@ -67,6 +67,10 @@ public class Invoice {
         }
     }
 
+    public void addPayment(PaymentHistory payment) {
+        payment.setInvoice(this);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

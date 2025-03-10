@@ -63,7 +63,7 @@ public class InvoiceServiceImpl implements InvoiceService {
                         .map(PaymentHistory::getAmountPaid)
                         .reduce(BigDecimal.ZERO, BigDecimal::add));
 
-        return scaleValue(invoice.getAmount().subtract(paidAmount)).max(BigDecimal.ZERO);
+        return scaleValue(invoice.getAmount().subtract(paidAmount));
     }
 
     @Override
@@ -83,13 +83,22 @@ public class InvoiceServiceImpl implements InvoiceService {
         if (invoice.getAmount().compareTo(remainingBalance) == 0) {
             return;
         }
-        InvoiceStatus newStatus = remainingBalance.compareTo(BigDecimal.ZERO) > 0
-                ? InvoiceStatus.PARTIALLY_PAID
-                : InvoiceStatus.PAID;
+        InvoiceStatus newStatus = switch (remainingBalance.compareTo(BigDecimal.ZERO)) {
+            case -1 -> InvoiceStatus.OVERPAID;
+            case 0  -> InvoiceStatus.PAID;
+            case 1  -> InvoiceStatus.PARTIALLY_PAID;
+            default -> throw new IllegalStateException("Unexpected value: " + remainingBalance);
+        };
 
         if (!invoice.getStatus().equals(newStatus)) {
             invoice.setStatus(newStatus);
             repository.save(invoice);
         }
+    }
+
+    @Override
+    public void addPaymentHistory(Invoice invoice, PaymentHistory paymentHistory) {
+        invoice.addPayment(paymentHistory);
+        repository.save(invoice);
     }
 }

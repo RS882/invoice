@@ -58,6 +58,13 @@ public class PaymentHistory {
         }
     }
 
+    public void setInvoice(Invoice invoice) {
+        this.invoice = invoice;
+        if (invoice != null && !invoice.getPaymentHistoryList().contains(this)) {
+            invoice.getPaymentHistoryList().add(this);
+        }
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
