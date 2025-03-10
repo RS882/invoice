@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 
 public enum Tax {
 
-    VAT(BigDecimal.valueOf(19));
+    VAT(BigDecimal.valueOf(19.00));
 
     private final BigDecimal taxRatePercentage;
 

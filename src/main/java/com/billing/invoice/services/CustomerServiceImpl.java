@@ -20,8 +20,8 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public void cleanDataUsedGB(Customer customer) {
-        customer.setDataUsedGB(0);
-        customer.setMonthsSubscribed(customer.getMonthsSubscribed() + 1);
+        customer.resetDataUsage();
+        customer.addOneMonthSubscription();
         repository.save(customer);
     }
 }

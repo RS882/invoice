@@ -4,6 +4,6 @@ import com.billing.invoice.exception_handler.exceptions.server_exception.ServerI
 
 public class MinioException extends ServerIOException {
     public MinioException(String message) {
-        super("Error while working with files in Minio :"+message);
+        super("Error while working with files in Minio :" + message);
     }
 }

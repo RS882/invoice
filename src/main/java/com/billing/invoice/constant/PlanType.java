@@ -1,7 +1,10 @@
 package com.billing.invoice.constant;
 
+import lombok.Getter;
+
 import java.math.BigDecimal;
 
+@Getter
 public enum PlanType {
 
     BASIC(new BigDecimal(30), 50, new BigDecimal(2)),
@@ -14,22 +17,10 @@ public enum PlanType {
 
     private final BigDecimal overageCharge;
 
-    PlanType(BigDecimal prise, int limit, BigDecimal overageCharge) {
-        this.price = prise;
+    PlanType(BigDecimal price, int limit, BigDecimal overageCharge) {
+        this.price = price;
         this.limit = limit;
         this.overageCharge = overageCharge;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public int getLimit() {
-        return limit;
-    }
-
-    public BigDecimal getOverageCharge() {
-        return overageCharge;
     }
 }
 

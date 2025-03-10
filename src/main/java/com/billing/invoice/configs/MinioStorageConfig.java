@@ -1,5 +1,6 @@
 package com.billing.invoice.configs;
 
+import com.billing.invoice.exception_handler.exceptions.server_exception.exceptions.MinioException;
 import io.minio.MinioClient;
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,9 +23,13 @@ public class MinioStorageConfig {
 
     @Bean
     public MinioClient minioClient() {
-        return MinioClient.builder()
-                .endpoint(minioUrl)
-                .credentials(accessKey, secretKey)
-                .build();
+        try {
+            return MinioClient.builder()
+                    .endpoint(minioUrl)
+                    .credentials(accessKey, secretKey)
+                    .build();
+        } catch (Exception e) {
+            throw new MinioException(e.getMessage());
+        }
     }
 }

@@ -56,6 +56,14 @@ public class Customer {
     @ToString.Exclude
     private List<DataUsageHistory> dataUsageHistoryList = new ArrayList<>();
 
+    public void resetDataUsage() {
+        this.dataUsedGB = 0;
+    }
+
+    public void addOneMonthSubscription() {
+        this.monthsSubscribed++;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
