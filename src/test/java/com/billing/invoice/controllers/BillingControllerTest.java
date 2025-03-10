@@ -112,14 +112,14 @@ class BillingControllerTest {
     @DisplayName("GET /v1/billing/invoice/customer/{id}")
     public class GetInvoiceForCustomerTests {
 
-        private final String URL = "/v1/billing/invoice/customer/{id}";
-
+        private final String URL_WITHOUT_ID = "/v1/billing/invoice/customer";
+        private final String URL = URL_WITHOUT_ID+"/{id}";
         @Test
         public void get_invoice_for_customer_status_200() throws Exception {
             Long testCustomerId = testCustomer.getId();
             int testCustomerMonthsSubscribed = testCustomer.getMonthsSubscribed();
 
-            MvcResult mResult = mockMvc.perform(get(URL, String.valueOf(testCustomerId))
+            MvcResult mResult = mockMvc.perform(get(URL, testCustomerId)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.invoiceId").isNumber())
@@ -168,7 +168,7 @@ class BillingControllerTest {
                 "0",
                 "-23"})
         public void get_invoice_for_customer_status_400_customer_id_is_incorrect(Long customerId) throws Exception {
-            mockMvc.perform(get(URL, String.valueOf(customerId))
+            mockMvc.perform(get(URL, customerId)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -176,8 +176,15 @@ class BillingControllerTest {
         }
 
         @Test
+        public void get_invoice_for_customer_status_404_when_customer_id_is_null() throws Exception {
+            mockMvc.perform(get(URL_WITHOUT_ID)
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isNotFound());
+        }
+
+        @Test
         public void get_invoice_for_customer_status_404_customer_not_found() throws Exception {
-            mockMvc.perform(get(URL, String.valueOf(12345L))
+            mockMvc.perform(get(URL, 12345)
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isNotFound())
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -197,7 +204,7 @@ class BillingControllerTest {
 
             invoiceRepository.save(invoice);
 
-            mockMvc.perform(get(URL, String.valueOf(testCustomer.getId()))
+            mockMvc.perform(get(URL, testCustomer.getId())
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.message").isNotEmpty())
@@ -217,7 +224,7 @@ class BillingControllerTest {
 
             dataUsageHistoryRepository.save(newDataUsageHistory);
 
-            mockMvc.perform(get(URL, String.valueOf(testCustomer.getId()))
+            mockMvc.perform(get(URL, testCustomer.getId())
                             .contentType(MediaType.APPLICATION_JSON))
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.message").isNotEmpty())

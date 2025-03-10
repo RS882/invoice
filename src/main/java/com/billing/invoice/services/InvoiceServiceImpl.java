@@ -51,7 +51,6 @@ public class InvoiceServiceImpl implements InvoiceService {
     @Override
     public BigDecimal calculateRemainingBalance(Long invoiceId) {
         Invoice invoice = getInvoiceById(invoiceId);
-
         return calculateRemainingBalance(invoice);
     }
 

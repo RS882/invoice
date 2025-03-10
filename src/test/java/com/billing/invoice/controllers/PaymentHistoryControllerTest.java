@@ -81,11 +81,13 @@ class PaymentHistoryControllerTest {
 
         private Invoice savedInvoice;
 
+        private final double INVOICE_AMOUNT= 120;
+
         @BeforeEach
-        void setUpPOSTPayment() {
+        void nestedSetUp() {
             Invoice invoice = Invoice.builder()
                     .customer(testCustomer)
-                    .amount(BigDecimal.valueOf(120L))
+                    .amount(BigDecimal.valueOf(INVOICE_AMOUNT))
                     .billingDate(LocalDate.now())
                     .status(InvoiceStatus.PARTIALLY_PAID)
                     .build();
