@@ -1,102 +1,395 @@
- 
-# 💳 Billing System — Java Spring Boot Project
+# 💰 Billing & Invoicing Platform
 
-A modular and testable billing system built with **Java 17**, **Spring Boot**, and **H2**, supporting:
+A billing and invoice management platform built with Java and Spring Boot.
 
-- 🧠 Tariff strategy patterns (Strategy Design Pattern)
-- 💵 Partial and multi-method payments
-- 📜 Invoice generation with VAT and discounts
-- 🧾 PDF invoice creation using **iText 7**
-- ☁ File upload and download with **MinIO**
-- 🧪 Comprehensive test coverage using **JUnit 5** and **Mockito**
-- 🔍 Centralized logging with **AOP (AspectJ)**
+The system provides invoice generation, payment processing, billing plan management, tax calculation, PDF document generation, and cloud-ready document storage.
+
+The project demonstrates practical experience with business domain modeling, financial workflows, object storage integration, document generation, REST API design, and scalable backend architecture.
 
 ---
 
-## 🔧 Tech Stack
+# 📖 Overview
 
-- **Java 17**
-- **Spring Boot 3**
-- **Spring Data JPA + H2**
-- **MinIO Java SDK**
-- **iText PDF 7**
-- **Swagger / OpenAPI 3**
-- **JUnit 5, Mockito**
+The platform is designed to automate invoice-related workflows and provide a centralized solution for billing operations.
 
----
+Core responsibilities include:
 
-## 🧩 Features
+* Customer management
+* Invoice generation
+* Payment processing
+* Billing plan calculation
+* Tax handling
+* Discount application
+* PDF generation
+* Invoice storage
+* Billing history management
 
-### 1. Tariff Strategies (Strategy Pattern)
-- `Basic`, `Premium`, `Business` plans
-- Monthly fee, GB limits, overage charge
-- Discounts based on subscription length
-- Dynamic strategy resolution
-
-### 2. Invoicing
-- Invoice generation with calculated total
-- VAT (19%) and discounts applied
-- Invoices persisted in DB and exported to PDF
-
-### 3. Payments
-- Supports `CREDIT_CARD`, `PAYPAL`, `BANK_TRANSFER`
-- Multi-payment & partial payment support
-- Automatic invoice status tracking: `PAID`, `PARTIALLY_PAID`, `PENDING`, `OVERPAID`
-
-### 4. File Management (MinIO)
-- PDF invoices uploaded to MinIO
-- MinIO path stored in DB
-- Downloads available through service
-
-### 5. Logging (AOP)
-- All billing operations (calculate, upload, generate) logged via custom aspect
-- Includes operation signature and customer/invoice IDs
-
-### 6. Exception Handling
-- Centralized global exception handler
-- Custom exceptions: `NotFound`, `BadRequest`, `ServerError`
-- Structured error responses with validation error details
-
-### 7. Testing
-- Service and controller tests with parameterized inputs
-- Coverage for discounts, VAT, invalid inputs, edge cases
-- Mocked PDF generation and repository layers
+The system separates billing logic, payment processing, document generation, and storage concerns into dedicated components.
 
 ---
 
-## 🧪 How to Run
+# 🚀 Core Features
 
-```bash
-# Run application (in-memory H2 DB)
-./mvnw spring-boot:run
+## 🧾 Invoice Management
+
+The platform provides a complete invoice lifecycle.
+
+Capabilities:
+
+* Invoice creation
+* Invoice retrieval
+* Invoice status management
+* Invoice history tracking
+
+Invoice states may include:
+
+* Draft
+* Issued
+* Paid
+* Overdue
+* Cancelled
+
+---
+
+## 💳 Payment Processing
+
+The system supports payment registration and invoice settlement workflows.
+
+Features:
+
+* Payment recording
+* Remaining balance calculation
+* Payment history tracking
+* Invoice status updates
+
+Benefits:
+
+* Improved financial visibility
+* Accurate balance tracking
+* Payment auditability
+
+---
+
+## 👤 Customer Management
+
+Customer information is managed independently from invoice processing.
+
+Capabilities:
+
+* Customer creation
+* Customer retrieval
+* Customer billing history
+* Customer-plan association
+
+---
+
+## 📊 Billing Plan Management
+
+The platform supports multiple billing strategies.
+
+Examples:
+
+* Basic Plan
+* Premium Plan
+* Business Plan
+
+The implementation follows the Strategy Pattern, allowing billing rules to evolve independently.
+
+---
+
+## 🏷 Tax & Discount Processing
+
+Billing calculations support:
+
+* Tax application
+* Discount rules
+* Plan-specific calculations
+
+This enables flexible pricing models while keeping billing logic maintainable.
+
+---
+
+## 📄 PDF Invoice Generation
+
+Invoices can be generated as PDF documents.
+
+Benefits:
+
+* Portable invoice format
+* Consistent document presentation
+* Simplified sharing and archiving
+
+---
+
+## ☁ Document Storage
+
+Generated invoices are stored using MinIO object storage.
+
+Features:
+
+* S3-compatible storage
+* Document persistence
+* Storage abstraction
+* Cloud-ready architecture
+
+---
+
+# 🏗 Architecture
+
+```text
+Client
+   │
+   ▼
+REST API
+   │
+   ▼
+Business Layer
+   │
+   ├── Customer Management
+   ├── Billing Engine
+   ├── Payment Processing
+   ├── Invoice Management
+   ├── PDF Generation
+   │
+   ▼
+Persistence Layer
+   │
+   ├── Database
+   └── MinIO Storage
 ```
 
-Go to `http://localhost:8080/swagger-ui.html` to explore the API.
+The architecture separates financial workflows, storage concerns, and document generation into dedicated modules.
 
 ---
 
-## 📁 Example Scenario
+# 📈 Billing Workflow
 
-> Customer: Premium, 120GB used, 18 months subscription
+```text
+Customer
+    │
+    ▼
+Billing Plan
+    │
+    ▼
+Tax & Discount Calculation
+    │
+    ▼
+Invoice Generation
+    │
+    ▼
+PDF Creation
+    │
+    ▼
+Document Storage
+    │
+    ▼
+Payment Processing
+```
 
-- Base: 50€ + (20GB * 1.5€) = 80€
-- Discount 5% → 76€
-- VAT 19% → **Total: 90.44€**
-- Invoice saved in DB + uploaded to MinIO
+This workflow mirrors common real-world billing systems.
 
 ---
 
-## 🛠 Future Improvements
+# 🔒 Security & Validation
 
-- Dockerize for local demo
-- Testcontainers for integration testing
-- CI integration (GitHub Actions)
-- Frontend UI with PDF viewer
+The platform includes:
+
+* Request validation
+* Business rule validation
+* Structured exception handling
+* Consistent API responses
+
+This improves reliability and reduces invalid financial operations.
 
 ---
 
-## 📄 Author
+# ⚙ Technology Stack
 
-Developer: @Ruslan Senkin.
-2025
+## Backend
 
+* Java
+* Spring Boot
+
+## Persistence
+
+* Spring Data JPA
+* MySQL
+* Liquibase
+
+## Storage
+
+* MinIO
+* S3-Compatible Object Storage
+
+## Documentation
+
+* OpenAPI
+* Swagger
+
+## Document Processing
+
+* PDF Generation
+
+## Testing
+
+* JUnit 5
+* Mockito
+
+---
+
+# 🧪 Testing Strategy
+
+The project includes tests covering:
+
+### Billing Logic
+
+* Plan calculations
+* Tax calculations
+* Discount calculations
+
+### Payment Processing
+
+* Payment registration
+* Remaining balance calculations
+
+### Invoice Management
+
+* Invoice lifecycle operations
+* Business validation
+
+### Storage
+
+* File storage integration
+* Document handling
+
+Testing tools:
+
+* JUnit 5
+* Mockito
+
+---
+
+# 📊 Design Highlights
+
+The project demonstrates practical experience with:
+
+* Financial Domain Modeling
+* Strategy Pattern
+* PDF Generation
+* Object Storage Integration
+* REST API Design
+* Validation Frameworks
+* Business Workflow Automation
+* Cloud-Native Storage Concepts
+
+---
+
+# 🤔 Why This Design?
+
+### Why Strategy Pattern for Billing Plans?
+
+Different billing plans require different pricing rules.
+
+Using the Strategy Pattern provides:
+
+* Extensibility
+* Cleaner business logic
+* Better maintainability
+* Open/Closed Principle compliance
+
+---
+
+### Why Separate Payments From Invoices?
+
+Invoices and payments represent different business concepts.
+
+Separating them enables:
+
+* Partial payments
+* Payment history tracking
+* Better financial reporting
+* Cleaner domain boundaries
+
+---
+
+### Why Generate PDFs on the Backend?
+
+Invoice generation must remain consistent regardless of client application.
+
+Backend generation provides:
+
+* Centralized document control
+* Consistent formatting
+* Improved reliability
+
+---
+
+### Why Store Documents in MinIO?
+
+Object storage provides a better solution than storing large documents directly inside the database.
+
+Benefits:
+
+* Scalability
+* Cloud compatibility
+* Lower database load
+* Better storage management
+
+---
+
+### Why Liquibase?
+
+Database schema changes should be version-controlled and reproducible.
+
+Liquibase provides:
+
+* Schema versioning
+* Automated migrations
+* Environment consistency
+
+---
+
+### Why Build This Project?
+
+The goal was to gain practical experience with:
+
+* Financial systems
+* Billing workflows
+* PDF generation
+* Object storage
+* Enterprise backend architecture
+
+while implementing a realistic business-oriented application.
+
+---
+
+# 🚀 Future Improvements
+
+Planned enhancements:
+
+* Scheduled invoice generation
+* Email delivery
+* Recurring billing
+* Payment gateway integration
+* Reporting dashboards
+* Event-driven invoice processing
+* Multi-currency support
+
+---
+
+# 👨‍💻 Author
+
+**Ruslan Senkin**
+
+Java Backend Developer
+
+Specialization:
+
+* Java
+* Spring Boot
+* REST APIs
+* Financial Systems
+* Object Storage
+* Domain Modeling
+* Cloud-Native Development
+* Backend Architecture
